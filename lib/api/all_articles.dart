@@ -1,5 +1,5 @@
 
-class AllArticles{
+class Article{
 
   String author;
   String title;
@@ -9,7 +9,7 @@ class AllArticles{
   String date;
   String content;
 
-  AllArticles({this.author, this.title, this.desc, this.url, this.imageURL,
+  Article({this.author, this.title, this.desc, this.url, this.imageURL,
       this.date, this.content});
 
 

@@ -3,7 +3,7 @@ import 'package:breakingnews/screens/navigator_drawer.dart';
 import 'package:breakingnews/screens/whats_new.dart';
 import 'popular.dart';
 import 'favorite.dart';
-import 'package:breakingnews/api/api_articles.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final id = 'HomeScreen';
@@ -17,7 +17,7 @@ enum popmenu{
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
   TabController _tabController;
-  ApiArticles api =new ApiArticles();
+
 
   @override
 
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
   @override
   Widget build(BuildContext context) {
-    api.fetchAllArticles();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Explore'),

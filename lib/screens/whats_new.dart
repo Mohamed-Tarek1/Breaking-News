@@ -1,12 +1,16 @@
+import 'package:breakingnews/api/all_articles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:breakingnews/api/api_articles.dart';
+import 'dart:async';
 class WhatsNew extends StatefulWidget {
   @override
   _WhatsNewState createState() => _WhatsNewState();
 }
 
 class _WhatsNewState extends State<WhatsNew> {
+  ApiArticles api = new ApiArticles();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -37,7 +41,7 @@ class _WhatsNewState extends State<WhatsNew> {
                   SizedBox(height: 40,)
                 ],
               ),
-            )
+            ) 
         ],),
       )
 
@@ -52,19 +56,27 @@ class _WhatsNewState extends State<WhatsNew> {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              _drawSingleRow()
-              ,
-              _drawDivider()
-              ,_drawSingleRow(),
-              _drawDivider()
-              ,
-              _drawSingleRow(),
-              _drawDivider(),
-            ],
+          child: FutureBuilder (
+            future: api.fetchAllArticles(),
+            builder: (context,AsyncSnapshot snapShot){
+          Article post1 = snapShot.data[1];
+          Article post2 = snapShot.data[2];
+          Article post3 = snapShot.data[3];
 
+              return Column(
+              children: <Widget>[
+                _drawSingleRow(post1)
+                ,
+                _drawDivider()
+                ,_drawSingleRow(post2),
+                _drawDivider()
+                ,
+                _drawSingleRow(post3),
+                _drawDivider(),
+              ],
 
+            );
+        },
 
           ),
         ),
@@ -144,32 +156,27 @@ class _WhatsNewState extends State<WhatsNew> {
  }
 }
 
-  Widget _drawSingleRow() {
+  Widget _drawSingleRow(Article post) {
 return Padding(
   padding: const EdgeInsets.all(8.0),
   child:   Row(
 
     children: <Widget>[
 
-      Image(image: ExactAssetImage("assets/images/whatnew.jpg"),fit:BoxFit.cover,height: 100,width: 100,),
+      Image(image: NetworkImage(post.imageURL),fit:BoxFit.cover,height: 100,width: 100,),
       SizedBox(width: 10,),
       Expanded(
           child: Column(
-            
+
             children: <Widget>[
-              Text('The world global warming Annual Summer',maxLines: 2,style:
+              Text(post.title,maxLines: 2,style:
               TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
               SizedBox(height: 8,),
               Row(
                 // crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Michael Adams',),
-                  Row(children: <Widget>[Icon(
-                      Icons.timer
-                  ),
-                    Text('15 Min')
-                  ],)
+                  Text(post.author,style: TextStyle(fontSize: 15),),
 
                 ],
 
