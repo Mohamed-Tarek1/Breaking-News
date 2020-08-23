@@ -1,3 +1,4 @@
+import 'package:breakingnews/api/api_articles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,9 +14,12 @@ class OnBoarding extends StatefulWidget {
 }
 
 class _OnBoardingState extends State<OnBoarding> {
+
+
   List<PageModel> pages;
 
   ValueNotifier<int> _pageViewNotifier = ValueNotifier(0);
+
 
   void _addPages() {
     pages = List<PageModel>();
