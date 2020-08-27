@@ -62,7 +62,8 @@ class _WhatsNewState extends State<WhatsNew> {
           child: FutureBuilder(
             future: api.fetchAllArticles(),
             builder: (context, AsyncSnapshot snapShot) {
-               switch (snapShot.connectionState) {
+
+               switch (snapShot.connectionState){
                 case ConnectionState.waiting:
                   return _Loading();
                   break;
@@ -71,30 +72,36 @@ class _WhatsNewState extends State<WhatsNew> {
                   break;
 
                 case ConnectionState.none:
-                  // TODO : Handle Problem
+                  return _connectionError();
                   break;
                 case ConnectionState.done:
                   if (snapShot.error != null) {
-                    // TODO : Handle Problem
+                    return _error(snapShot.error);
                   } else {
                     if (snapShot.hasData) {
-                      Article post1 = snapShot.data[0];
-                      Article post2 = snapShot.data[1];
+                      List <Article> posts=snapShot.data;
+                      if(posts.length>=3){
+                        Article post1 = snapShot.data[0];
+                        Article post2 = snapShot.data[1];
 
-                      Article post3 = snapShot.data[3];
+                        Article post3 = snapShot.data[3];
 
-                      return Column(
-                        children: <Widget>[
-                          _drawSingleRow(post1),
-                          _drawDivider(),
-                          _drawSingleRow(post2),
-                          _drawDivider(),
-                          _drawSingleRow(post3),
-                          _drawDivider(),
-                        ],
-                      );
+                        return Column(
+                          children: <Widget>[
+                            _drawSingleRow(post1),
+                            _drawDivider(),
+                            _drawSingleRow(post2),
+                            _drawDivider(),
+                            _drawSingleRow(post3),
+                            _drawDivider(),
+                          ],
+                        );
+                      }else{
+                        return _noData();
+                      }
+
                     } else {
-                      // TODO : Handle Problem
+                    return _noData();
                     }
                   }
                   break;
@@ -186,9 +193,33 @@ class _WhatsNewState extends State<WhatsNew> {
     );
   }
 
-  Widget _Loading() {}
 }
 
+Widget _Loading() {
+  return Container(
+    child: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
+Widget _error(var error){
+  return Container(
+    padding:  EdgeInsets.all(16),
+    child:Text(error.toString()),
+  );
+}
+Widget _connectionError() {
+  return Container(
+    padding:  EdgeInsets.all(16),
+    child:Text("Connectio Error!!!"),
+  );
+}
+Widget _noData() {
+  return Container(
+    padding:  EdgeInsets.all(16),
+    child:Text("No Data Available"),
+  );
+}
 Widget _drawSingleRow(Article post) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
