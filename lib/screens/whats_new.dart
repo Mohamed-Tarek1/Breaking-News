@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:breakingnews/api/all_articles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,75 @@ class WhatsNew extends StatefulWidget {
 class _WhatsNewState extends State<WhatsNew> {
   ApiArticles api = new ApiArticles();
 
+  Widget _drawHeader ( ){
+    return FutureBuilder(
+      builder: (context,AsyncSnapshot snapShot){
+        switch (snapShot.connectionState){
+          case ConnectionState.waiting:
+            return _Loading();
+            break;
+          case ConnectionState.active:
+            return _Loading();
+            break;
+
+          case ConnectionState.none:
+            return _connectionError();
+            break;
+          case ConnectionState.done:
+            if (snapShot.error != null) {
+            return _error(snapShot.error);
+          } else {
+              List<Article> posts=snapShot.data;
+              Random random =Random();
+              int rabdomIndex=random.nextInt(posts.length);
+              Article post=posts[rabdomIndex];
+            return Container(
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(post.imageURL),
+                      fit: BoxFit.cover,
+                    )),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.27,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        post.title,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 8.0,
+                      ),
+                      Text(
+                        post.content.substring(0,100),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                ));}
+            break;
+        }
+        },
+      future: api.fetchAllArticles(),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -21,10 +92,7 @@ class _WhatsNewState extends State<WhatsNew> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          drawHeader(
-            desc: 'Description.........',
-            header: 'Header',
-          ),
+          _drawHeader(),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: _drawSectionTitle('Top Stories'),
@@ -286,53 +354,4 @@ Widget _drawSingleRow(Article post) {
       ],
     ),
   );
-}
-
-class drawHeader extends StatelessWidget {
-  final String header, desc;
-
-  drawHeader({this.header, this.desc});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: ExactAssetImage('assets/images/whatnew.jpg'),
-              fit: BoxFit.cover,
-            )),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.27,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    header,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    desc,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              ),
-            )),
-      ],
-    );
-  }
 }
