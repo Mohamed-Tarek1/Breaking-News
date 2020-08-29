@@ -3,8 +3,10 @@ import 'package:breakingnews/screens/navigator_drawer.dart';
 import 'package:breakingnews/screens/whats_new.dart';
 import 'popular.dart';
 import 'favorite.dart';
-
-
+import 'package:breakingnews/pages/about.dart';
+import 'package:breakingnews/pages/help.dart';
+import 'package:breakingnews/pages/contact.dart';
+import 'package:breakingnews/pages/settings.dart';
 class HomeScreen extends StatefulWidget {
   final id = 'HomeScreen';
 
@@ -82,7 +84,35 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),];
     },
     onSelected: (popmenu menu){
+    switch(menu){
+      case popmenu.About :
+          Navigator.push(context, MaterialPageRoute(builder: (context){
+            return About();
+          }));
 
+        break;
+      case popmenu.Help :
+
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+      return Help();
+      }));
+
+        break;
+      case popmenu.Contact :
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return Contact();
+        }));
+
+        break;
+      case popmenu.Settings :
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return Settings();
+        }));
+
+        break;
+
+
+    }
     },icon: Icon(
         Icons.more_vert
       ),);

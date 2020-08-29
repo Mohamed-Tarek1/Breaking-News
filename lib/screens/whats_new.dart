@@ -1,6 +1,7 @@
-import 'dart:math';
 
+import 'dart:math';
 import 'package:breakingnews/api/all_articles.dart';
+import 'package:breakingnews/screens/single_post.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -37,47 +38,55 @@ class _WhatsNewState extends State<WhatsNew> {
               Random random =Random();
               int rabdomIndex=random.nextInt(posts.length);
               Article post=posts[rabdomIndex];
-            return Container(
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(post.imageURL),
-                      fit: BoxFit.cover,
-                    )),
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.27,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        post.title,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 8.0,
-                      ),
-                      Text(
-                        post.content.substring(0,100),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
+
+            return GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return SinglePost(post);
+                }));
+              },
+              child: Container(
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(post.imageURL),
+                        fit: BoxFit.cover,
+                      )),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.27,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          post.title,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ));}
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          post.content.substring(0,50),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  )),
+            );}
             break;
         }
         },
@@ -143,8 +152,57 @@ class _WhatsNewState extends State<WhatsNew> {
         ],
       ),
     ));
+
   }
 
+  Widget _drawSingleRow(Article post) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return SinglePost(post);
+        }));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            Image(
+              image: NetworkImage(post.imageURL),
+              fit: BoxFit.cover,
+              height: 100,
+              width: 100,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      post.title,
+                      maxLines: 2,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          post.author,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    )
+                  ],
+                ))
+          ],
+        ),
+      ),
+    );
+  }
   Widget _drawTopStories() {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
@@ -223,63 +281,70 @@ class _WhatsNewState extends State<WhatsNew> {
   }
 
   Widget _drawRecntlyUpdatesCard(Color color, Article article) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: NetworkImage(article.imageURL),
-              fit: BoxFit.cover,
-            )),
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.25,
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Container(
-              padding: EdgeInsets.only(left: 24.0, right: 16.0, top: 2.0),
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return SinglePost(article);
+        }));
+      },
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
               decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(4),
+                  image: DecorationImage(
+                image: NetworkImage(article.imageURL),
+                fit: BoxFit.cover,
+              )),
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.25,
+            ),
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Container(
+                padding: EdgeInsets.only(left: 24.0, right: 16.0, top: 2.0),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'News',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
               child: Text(
-                'News',
+                article.title,
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
-            child: Text(
-              article.title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.timer,
+                    color: Colors.grey.shade400,
+                    size: 14,
+                  ),
+                  Text(
+                    article.date,
+                    style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                  )
+                ],
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  Icons.timer,
-                  color: Colors.grey.shade400,
-                  size: 14,
-                ),
-                Text(
-                  article.date,
-                  style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
-                )
-              ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -314,44 +379,3 @@ Widget _noData() {
   );
 }
 
-Widget _drawSingleRow(Article post) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      children: <Widget>[
-        Image(
-          image: NetworkImage(post.imageURL),
-          fit: BoxFit.cover,
-          height: 100,
-          width: 100,
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Expanded(
-            child: Column(
-          children: <Widget>[
-            Text(
-              post.title,
-              maxLines: 2,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              // crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  post.author,
-                  style: TextStyle(fontSize: 15),
-                ),
-              ],
-            )
-          ],
-        ))
-      ],
-    ),
-  );
-}
