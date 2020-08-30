@@ -10,8 +10,10 @@ class InstgramFeeds extends StatefulWidget {
 }
 
 class _InstgramFeedsState extends State<InstgramFeeds> {
-  Color like = Colors.grey;
+
   TextStyle _hashtagStyle =TextStyle(color: Colors.orange);
+  List<int> ids=[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +38,7 @@ class _InstgramFeedsState extends State<InstgramFeeds> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _cardHeader(),
+                    _cardHeader(position),
                      _cardHashtags(),
                     _cardBody(),
                     _cardFooter()],
@@ -49,7 +51,7 @@ class _InstgramFeedsState extends State<InstgramFeeds> {
   }
 
 
-  Widget _cardHeader() { return Padding(
+  Widget _cardHeader(int position) { return Padding(
     padding: const EdgeInsets.only(left: 8.0),
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -79,12 +81,20 @@ class _InstgramFeedsState extends State<InstgramFeeds> {
                 child: Row(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon( Icons.favorite,size: 27 ,color: like,),
+                      icon: Icon( Icons.favorite,size: 27 ),
                       onPressed: (){
+                        if(ids.contains(position) ){
+                          ids.remove(position);
+                        }else{
+                          ids.add(position);
+                        }
                         setState(() {
+
                         });
                       },
-                    ),
+
+                        color: (ids.contains(position))?Colors.red :Colors.grey,),
+
                     Transform.translate(
                       offset :Offset(-12,0),
                       child: Text('25',style: TextStyle(
