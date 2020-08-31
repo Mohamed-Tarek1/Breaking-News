@@ -1,3 +1,4 @@
+import 'package:breakingnews/nav_menu/login.dart';
 import 'package:breakingnews/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:breakingnews/nav_menu/nav_menu.dart';
@@ -12,16 +13,24 @@ class NavigatorDrawer extends StatefulWidget {
 }
 
 class _NavigatorDrawerState extends State<NavigatorDrawer> {
+  static bool isLoggedIn=false;
   List <NavMenu> navigationmenu =[
     NavMenu(title: 'Explore',destination: ()=> HomeScreen()),
     NavMenu(title: 'HeadingLines',destination: ()=> HeadingLines()),
     NavMenu(title: 'Twitter Feeds',destination: ()=> TwitterFeeds()),
     NavMenu(title: 'Instagram Feeds',destination: ()=> InstgramFeeds()),
     NavMenu(title: 'Facebook Feeds',destination: ()=> FacebookFeeds()),
-    NavMenu(title: 'Settings',destination: ()=> HomeScreen()),
-    NavMenu(title: 'Logout',destination: ()=> HomeScreen()),
   ];
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+if(isLoggedIn ==true){
+  navigationmenu.add(NavMenu(title: 'Logout',destination: ()=> FacebookFeeds()));
+}else{
+  navigationmenu.add(NavMenu(title: 'Login',destination: ()=> Login()));
+}
+  }
 
   @override
   Widget build(BuildContext context) {

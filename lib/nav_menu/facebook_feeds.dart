@@ -6,7 +6,8 @@ class FacebookFeeds extends StatefulWidget {
 }
 
 class _FacebookFeedsState extends State<FacebookFeeds> {
-  Color like = Colors.grey;
+
+  List<int> ids=[];
   TextStyle _hashtagStyle =TextStyle(color: Colors.orange);
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _FacebookFeedsState extends State<FacebookFeeds> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    _cardHeader(),
+                    _cardHeader(position),
                     _cardHashtags(),
                     _cardBody(),
                     _cardFooter()],
@@ -45,7 +46,7 @@ class _FacebookFeedsState extends State<FacebookFeeds> {
   }
 
 
-  Widget _cardHeader() { return Padding(
+  Widget _cardHeader(int position) { return Padding(
     padding: const EdgeInsets.only(left: 8.0),
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -75,9 +76,15 @@ class _FacebookFeedsState extends State<FacebookFeeds> {
                 child: Row(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon( Icons.favorite,size: 27 ,color: like,),
+                      icon: Icon( Icons.favorite,size: 27 ,),
+                      color: (ids.contains(position))?Colors.red :Colors.grey,
                       onPressed: (){
                         setState(() {
+                          if(ids.contains(position) ){
+                            ids.remove(position);
+                          }else{
+                            ids.add(position);
+                          }
                         });
                       },
                     ),
