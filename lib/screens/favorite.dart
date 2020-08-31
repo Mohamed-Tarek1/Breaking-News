@@ -4,20 +4,7 @@ class Favorite extends StatefulWidget {
   @override
   _FavoriteState createState() => _FavoriteState();
 }
-Random random = Random();
-List<Color> colorsList = [
-  Colors.red,
-  Colors.teal,
-  Colors.deepOrange,
-  Colors.indigo,
-  Colors.brown,
-  Colors.purple
-];
 class _FavoriteState extends State<Favorite> {
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(itemBuilder: (context,position){
@@ -27,12 +14,9 @@ class _FavoriteState extends State<Favorite> {
     _authorRow()
             ,
       _newsItemRow(),
-
           ],
-
         ) ,
       );
-
     }, itemCount: 20,);
   }
 }
@@ -41,6 +25,7 @@ Widget _authorRow(){
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
       Row(
+
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
@@ -62,27 +47,8 @@ Widget _authorRow(){
                   color: Colors.grey,
                 ),
               ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  Text(
-                    '15 Min .',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Text(
-                    'Life Style',
-                    style: TextStyle(
-                      color: _getRandomColor(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+
+
         ],
       ),
       IconButton(
@@ -91,12 +57,9 @@ Widget _authorRow(){
         color: Colors.grey,
       ),
     ],
-  );
+  )]);
 }
 
-Color _getRandomColor() {
-  return colorsList[random.nextInt(colorsList.length)];
-}
 Widget _newsItemRow(){
   return Row(
     children: <Widget>[
